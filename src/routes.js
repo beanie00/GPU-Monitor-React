@@ -1,8 +1,6 @@
 import { Navigate, useRoutes } from 'react-router-dom';
 // layouts
 import DashboardLayout from './layouts/dashboard';
-import LogoOnlyLayout from './layouts/LogoOnlyLayout';
-//
 
 import NotFound from './pages/Page404';
 import DashboardApp from './pages/DashboardApp';

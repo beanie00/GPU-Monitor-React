@@ -1,5 +1,5 @@
 {
-  "name": "SISReL GPU Monitor",
+  "name": "@beanie00/sisrel-gpu-monitor",
   "author": "beanie",
   "version": "0.0.1",
   "private": true,
