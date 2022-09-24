@@ -1,9 +1,8 @@
 {
-  "name": "@minimal/material-kit-react",
-  "author": "minimals.cc",
-  "licence": "MIT",
-  "version": "1.5.0",
-  "private": false,
+  "name": "SISReL GPU Monitor",
+  "author": "beanie",
+  "version": "0.0.1",
+  "private": true,
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -50,6 +49,7 @@
     "apexcharts": "^3.35.3",
     "change-case": "^4.1.2",
     "date-fns": "^2.28.0",
+    "firebase": "^9.10.0",
     "history": "^5.3.0",
     "lodash": "^4.17.21",
     "numeral": "^2.0.6",
