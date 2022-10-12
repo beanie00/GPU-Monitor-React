@@ -28,7 +28,7 @@ export default function DashboardApp() {
 
   return (
     <Page title="Dashboard">
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
           <Typography variant="h4" sx={{mr: 2}}>
             SISReL GPU Monitor
@@ -39,13 +39,13 @@ export default function DashboardApp() {
         </Box>
 
         <Grid container spacing={3} sx={{mt: 5}}>
-          <Grid item xs={12} md={12} lg={12}>
+          <Grid item xs={12} md={12} lg={12} xl={12}>
             <ResourceListItem
               type={'GPU'}
               data={GPUData}
             />
           </Grid>
-          <Grid item xs={12} md={12} lg={12}>
+          <Grid item xs={12} md={12} lg={12} xl={12}>
             <ResourceListItem
               type={'CPU'}
               data={CPUData}

@@ -23,6 +23,15 @@ export default function ThemeProvider({ children }) {
       typography,
       shadows,
       customShadows,
+      breakpoints: {
+        values: {
+          xs: 0,
+          sm: 600,
+          md: 900,
+          lg: 1200,
+          xl: 1536,
+        },
+      },
     }),
     []
   );
