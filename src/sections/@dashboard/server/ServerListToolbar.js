@@ -1,11 +1,11 @@
-
-
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 // material
 import { styled } from '@mui/material/styles';
-import { Toolbar, Tooltip, IconButton, Typography, OutlinedInput, InputAdornment } from '@mui/material';
+import { Toolbar, Tooltip, IconButton, Typography, OutlinedInput, InputAdornment, Stack, Button } from '@mui/material';
 // component
 import Iconify from '../../../components/Iconify';
+import { FilterSidebar } from '.';
 
 // ----------------------------------------------------------------------
 
@@ -38,6 +38,15 @@ ServerListToolbar.propTypes = {
 };
 
 export default function ServerListToolbar({ numSelected, filterName, onFilterName }) {
+
+  const [openFilter, setOpenFilter] = useState(false);
+  const handleOpenFilter = () => {
+    setOpenFilter(true);
+  };
+  const handleCloseFilter = () => {
+    setOpenFilter(false);
+  };
+
   return (
     <RootStyle
       sx={{
@@ -71,11 +80,18 @@ export default function ServerListToolbar({ numSelected, filterName, onFilterNam
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <Iconify icon="ic:round-filter-list" />
-          </IconButton>
-        </Tooltip>
+        <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ px: 1, py: 2 }}>
+          <FilterSidebar
+            openFilter={openFilter}
+            onOpenFilter={handleOpenFilter}
+            onCloseFilter={handleCloseFilter}
+          />
+          <Tooltip title="Member setting">
+            <IconButton>
+              <Iconify icon="eva:settings-2-fill" />
+            </IconButton>
+          </Tooltip>
+        </Stack>
       )}
     </RootStyle>
   );

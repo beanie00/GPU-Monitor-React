@@ -26,17 +26,18 @@ import SERVERLIST from '../_mock/server';
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', alignRight: false },
-  { id: 'ip', label: 'IP', alignRight: false },
-  { id: 'cpu', label: 'CPU', alignRight: false },
-  { id: 'cpuClock', label: 'CPU Clock (GHz)', alignRight: false },
-  { id: 'cpuSockets', label: 'CPU Sockets', alignRight: false },
+  // { id: 'ip', label: 'IP', alignRight: false },
+  { id: 'usage', label: 'Usage', alignRight: false },
+  // { id: 'cpu', label: 'CPU', alignRight: false },
+  // { id: 'cpuClock', label: 'CPU Clock (GHz)', alignRight: false },
+  // { id: 'cpuSockets', label: 'CPU Sockets', alignRight: false },
   { id: 'cores', label: 'Cores', alignRight: false },
   { id: 'threads', label: 'Threads', alignRight: false },
   { id: 'gpu', label: 'GPU', alignRight: false },
   { id: 'numberOfGPU', label: '# of GPUs', alignRight: false },
   { id: 'ram', label: 'RAM (GB)', alignRight: false },
-  { id: 'ssd', label: 'SSD/HDD (GB)', alignRight: false },
-  { id: 'os', label: 'OS', alignRight: false },
+  // { id: 'ssd', label: 'SSD/HDD (GB)', alignRight: false },
+  // { id: 'os', label: 'OS', alignRight: false },
   { id: 'user', label: 'User', alignRight: false },
   { id: '' },
 ];
@@ -130,7 +131,6 @@ export default function User() {
 
         <Card>
           <ServerListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
-
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
@@ -145,7 +145,8 @@ export default function User() {
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, name, ip, cpu, cpuClock, cpuSockets, cores, threads, gpu, numberOfGPU, ram, ssd, os, user, status } = row;
+                    // const { id, name, ip, cpu, cpuClock, cpuSockets, cores, threads, gpu, numberOfGPU, ram, ssd, os, user, status } = row;
+                    const { id, name, usage, cores, threads, gpu, numberOfGPU, ram, user, status } = row;
                     const isItemSelected = selected.indexOf(name) !== -1;
 
                     return (
@@ -159,7 +160,7 @@ export default function User() {
                       >
                         <TableCell padding="checkbox">
                           <TimelineDot
-                            style={{width: '10px', height: '10px', marginLeft: '5px'}}
+                            style={{width: '10px', height: '10px', marginLeft: '20px'}}
                             color={
                               (status === 'running' && 'success') ||
                               (status === 'fail' && 'error') 
@@ -167,17 +168,18 @@ export default function User() {
                           />
                         </TableCell>
                         <TableCell align="left"><Typography variant="subtitle2" noWrap>{name}</Typography></TableCell>
-                        <TableCell align="left">{ip}</TableCell>
-                        <TableCell align="left">{cpu}</TableCell>
-                        <TableCell align="left">{cpuClock}</TableCell>
-                        <TableCell align="left">{cpuSockets}</TableCell>
+                        {/* <TableCell align="left">{ip}</TableCell> */}
+                        <TableCell align="left">{usage}</TableCell>
+                        {/* <TableCell align="left">{cpu}</TableCell> */}
+                        {/* <TableCell align="left">{cpuClock}</TableCell> */}
+                        {/* <TableCell align="left">{cpuSockets}</TableCell> */}
                         <TableCell align="left">{cores}</TableCell>
                         <TableCell align="left">{threads}</TableCell>
                         <TableCell align="left">{gpu}</TableCell>
                         <TableCell align="left">{numberOfGPU}</TableCell>
                         <TableCell align="left">{ram}</TableCell>
-                        <TableCell align="left">{ssd}</TableCell>
-                        <TableCell align="left">{os}</TableCell>
+                        {/* <TableCell align="left">{ssd}</TableCell> */}
+                        {/* <TableCell align="left">{os}</TableCell> */}
                         <TableCell align="left">{user}</TableCell>
                       </TableRow>
                     );
