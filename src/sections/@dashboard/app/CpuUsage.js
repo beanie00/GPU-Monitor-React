@@ -20,7 +20,7 @@ export default function CpuUsage({ cpuInfo }) {
         let swapTotal = parseInt(swap.split("total")[0].split(":")[1].replace("+", "0").replace(reg, ""), 10)
         let swapFree = parseInt(swap.split("free")[0].split("total")[1].replace("+", "0").replace(reg, ""), 10)
         let swapUsed = parseInt(swap.split("used")[0].split("free")[1].replace("+", "0").replace(reg, ""), 10)
-        let swapAvail = parseInt(swap.split("avail")[0].split("used")[1].replace("+", "0").replace(reg, ""), 10)
+        let swapAvail = parseInt(swap.split("avail")[0].split("used")[1].replace("+", "0").replace(reg, "").slice(1), 10)
 
         if (cpuInfo.includes("KiB")) {
             memTotal = Math.round((memTotal/1000000))
