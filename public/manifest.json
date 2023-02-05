@@ -1,6 +1,6 @@
 {
-  "short_name": "SISReL GPU Monitor",
-  "name": "SISReL GPU Monitor",
+  "short_name": "SISReL Server Monitor",
+  "name": "SISReL Server Monitor",
   "icons": [
     {
       "src": "favicon/favicon.ico",

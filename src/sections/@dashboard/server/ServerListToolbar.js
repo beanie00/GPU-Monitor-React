@@ -5,7 +5,7 @@ import { styled } from '@mui/material/styles';
 import { Toolbar, Tooltip, IconButton, Typography, OutlinedInput, InputAdornment, Stack, Button } from '@mui/material';
 // component
 import Iconify from '../../../components/Iconify';
-import { FilterSidebar } from '.';
+import { PropertySidebar } from '.';
 
 // ----------------------------------------------------------------------
 
@@ -35,9 +35,11 @@ ServerListToolbar.propTypes = {
   numSelected: PropTypes.number,
   filterName: PropTypes.string,
   onFilterName: PropTypes.func,
+  selectedProperties: PropTypes.array,
+  setSelectedProperties: PropTypes.func,
 };
 
-export default function ServerListToolbar({ numSelected, filterName, onFilterName }) {
+export default function ServerListToolbar({ numSelected, filterName, onFilterName, selectedProperties, setSelectedProperties }) {
 
   const [openFilter, setOpenFilter] = useState(false);
   const handleOpenFilter = () => {
@@ -81,16 +83,18 @@ export default function ServerListToolbar({ numSelected, filterName, onFilterNam
         </Tooltip>
       ) : (
         <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ px: 1, py: 2 }}>
-          <FilterSidebar
+          <PropertySidebar
             openFilter={openFilter}
             onOpenFilter={handleOpenFilter}
             onCloseFilter={handleCloseFilter}
+            selectedProperties={selectedProperties}
+            setSelectedProperties={setSelectedProperties}
           />
-          <Tooltip title="Member setting">
+          {/* <Tooltip title="Member setting">
             <IconButton>
               <Iconify icon="eva:settings-2-fill" />
             </IconButton>
-          </Tooltip>
+          </Tooltip> */}
         </Stack>
       )}
     </RootStyle>

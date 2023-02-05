@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker';
 // ----------------------------------------------------------------------
 const servers = [
   {
-    id: 1432484863,
+    // id: 1432484863,
     name: 'server63',
     ip: '143.248.48.63',
     cpu: 'E5-2667 v4',
@@ -20,7 +20,7 @@ const servers = [
     status : 'running'
   },
   {
-    id: 1432484858,
+    // id: 1432484858,
     name: 'server58',
     ip: '143.248.48.58',
     cpu: 'E5-2667 v4',
@@ -33,11 +33,11 @@ const servers = [
     ram: 126,
     ssd: 879,
     os: 20.04,
-    user: faker.name.firstName(),
-    status : 'running'
+    // user: faker.name.firstName(),
+    // status : 'running'
   },
   {
-    id: 14324848151,
+    // id: 14324848151,
     name: 'server151',
     ip: '143.248.48.151',
     cpu: 'E5-2620 v4',
@@ -50,11 +50,11 @@ const servers = [
     ram: 126,
     ssd: 879,
     os: 16.04,
-    user: faker.name.firstName(),
-    status : 'running'
+    // user: faker.name.firstName(),
+    // status : 'running'
   },
   {
-    id: 14324848160,
+    // id: 14324848160,
     name: 'server160',
     ip: '143.248.48.160',
     cpu: 'E5-2620 v4',
@@ -67,11 +67,11 @@ const servers = [
     ram: 126,
     ssd: 436,
     os: 22.04,
-    user: faker.name.firstName(),
-    status : 'running'
+    // user: faker.name.firstName(),
+    // status : 'running'
   },
   {
-    id: 14324848247,
+    // id: 14324848247,
     name: 'server247',
     ip: '143.248.48.247',
     cpu: 'E5-2620 v4',
@@ -84,11 +84,11 @@ const servers = [
     ram: 126,
     ssd: 456,
     os: 20.04,
-    user: faker.name.firstName(),
-    status : 'running'
+    // user: faker.name.firstName(),
+    // status : 'running'
   },
   {
-    id: 14324848137,
+    // id: 14324848137,
     name: 'server137',
     ip: '143.248.48.137',
     cpu: 'Silver 4110',
@@ -101,11 +101,11 @@ const servers = [
     ram: 126,
     ssd: 232,
     os: 20.04,
-    user: faker.name.firstName(),
-    status : 'running'
+    // user: faker.name.firstName(),
+    // status : 'running'
   },
   {
-    id: 143248483,
+    // id: 143248483,
     name: 'server3',
     ip: '143.248.48.3',
     cpu: 'Gold 6240R',
@@ -118,8 +118,8 @@ const servers = [
     ram: 126,
     ssd: 915,
     os: 20.04,
-    user: faker.name.firstName(),
-    status : 'running'
+    // user: faker.name.firstName(),
+    // status : 'running'
   },
   {
     id: 143248484,
@@ -128,7 +128,7 @@ const servers = [
     ip: '143.248.48.4',
   },
   {
-    id: 143248485,
+    // id: 143248485,
     name: 'server5',
     ip: '143.248.48.5',
     cpu: 'Gold 6240R',
@@ -141,11 +141,11 @@ const servers = [
     ram: 126,
     ssd: 1832,
     os: 18.04,
-    user: faker.name.firstName(),
-    status : 'running'
+    // user: faker.name.firstName(),
+    // status : 'running'
   },
   {
-    id: 143248486,
+    // id: 143248486,
     name: 'server6',
     ip: '143.248.48.6',
     cpu: 'Gold 6240R',
@@ -158,11 +158,11 @@ const servers = [
     ram: 126,
     ssd: 1832,
     os: 18.04,
-    user: faker.name.firstName(),
-    status : 'running'
+    // user: faker.name.firstName(),
+    // status : 'running'
   },
   {
-    id: 1432484172,
+    // id: 1432484172,
     name: 'main',
     ip: '143.248.41.72',
     cpu: 'i9-10980XE',
@@ -175,11 +175,11 @@ const servers = [
     ram: 126,
     ssd: 233,
     os: 20.04,
-    user: faker.name.firstName(),
-    status : 'running'
+    // user: faker.name.firstName(),
+    // status : 'running'
   },
   {
-    id: 14324848246,
+    // id: 14324848246,
     name: 'work',
     ip: '143.248.48.246',
     cpu: 'Silver 4210',
@@ -192,8 +192,8 @@ const servers = [
     ram: 503,
     ssd: 457,
     os: 18.04,
-    user: faker.name.firstName(),
-    status : 'running'
+    // user: faker.name.firstName(),
+    // status : 'running'
   },
   {
     id: 14324848121,
@@ -202,7 +202,7 @@ const servers = [
     status : 'fail'
   },
   {
-    id: 14324848203,
+    // id: 14324848203,
     name: 'simul203',
     ip: '143.248.48.203',
     cpu: 'i9-10980XE',
@@ -215,11 +215,11 @@ const servers = [
     ram: 62.5,
     ssd: 457,
     os: 18.04,
-    user: faker.name.firstName(),
-    status : 'running'
+    // user: faker.name.firstName(),
+    // status : 'running'
   },
   {
-    id: 14324848204,
+    // id: 14324848204,
     name: 'simul204',
     ip: '143.248.48.204',
     cpu: 'i9-10980XE',
@@ -232,11 +232,11 @@ const servers = [
     ram: 62.5,
     ssd: 457,
     os: 18.04,
-    user: faker.name.firstName(),
-    status : 'running'
+    // user: faker.name.firstName(),
+    // status : 'running'
   },
   {
-    id: 14324814212,
+    // id: 14324814212,
     name: 'e312',
     ip: '143.248.142.12',
     cpu: 'Gold 6238R',
@@ -249,11 +249,11 @@ const servers = [
     ram: 188,
     ssd: 1832,
     os: 20.04,
-    user: faker.name.firstName(),
-    status : 'running'
+    // user: faker.name.firstName(),
+    // status : 'running'
   },
   {
-    id: 14324814213,
+    // id: 14324814213,
     name: 'e313',
     ip: '143.248.142.13',
     cpu: 'Gold 6238R',
@@ -266,11 +266,11 @@ const servers = [
     ram: 188,
     ssd: 1832,
     os: 20.04,
-    user: faker.name.firstName(),
-    status : 'running'
+    // user: faker.name.firstName(),
+    // status : 'running'
   },
   {
-    id: 14324814245,
+    // id: 14324814245,
     name: 'e345',
     ip: '143.248.142.45',
     cpu: 'Gold 6248R',
@@ -283,11 +283,11 @@ const servers = [
     ram: 252,
     ssd: 914,
     os: 20.04,
-    user: faker.name.firstName(),
-    status : 'running'
+    // user: faker.name.firstName(),
+    // status : 'running'
   },
   {
-    id: 143248142193,
+    // id: 143248142193,
     name: 'e3193',
     ip: '143.248.142.193',
     cpu: 'Gold 6238R',
@@ -300,11 +300,11 @@ const servers = [
     ram: 188,
     ssd: 1832,
     os: 20.04,
-    user: faker.name.firstName(),
-    status : 'running'
+    // user: faker.name.firstName(),
+    // status : 'running'
   },
   {
-    id: 143248142202,
+    // id: 143248142202,
     name: 'e3202',
     ip: '143.248.142.202',
     cpu: 'Gold 6238R',
@@ -317,11 +317,11 @@ const servers = [
     ram: 188,
     ssd: 1832,
     os: 20.04,
-    user: faker.name.firstName(),
-    status : 'running'
+    // user: faker.name.firstName(),
+    // status : 'running'
   },
   {
-    id: 143248142204,
+    // id: 143248142204,
     name: 'e3204',
     ip: '143.248.142.204',
     cpu: 'Gold 6238R',
@@ -334,11 +334,11 @@ const servers = [
     ram: 188,
     ssd: 1832,
     os: 20.04,
-    user: faker.name.firstName(),
-    status : 'running'
+    // user: faker.name.firstName(),
+    // status : 'running'
   },
   {
-    id: 143248142205,
+    // id: 143248142205,
     name: 'e3205',
     ip: '143.248.142.205',
     cpu: 'Gold 6238R',
@@ -351,8 +351,8 @@ const servers = [
     ram: 188,
     ssd: 1832,
     os: 20.04,
-    user: faker.name.firstName(),
-    status : 'running'
+    // user: faker.name.firstName(),
+    // status : 'running'
   },
   {
     id: '14324849188',
@@ -361,7 +361,7 @@ const servers = [
     status : 'fail'
   },
   {
-    id: 1432484942,
+    // id: 1432484942,
     name: 'server42',
     ip: '143.248.49.42',
     cpu: 'E5-2640 v4',
@@ -374,11 +374,11 @@ const servers = [
     ram: 126,
     ssd: 960,
     os: 18.04,
-    user: faker.name.firstName(),
-    status : 'running'
+    // user: faker.name.firstName(),
+    // status : 'running'
   },
   {
-    id: 14324849175,
+    // id: 14324849175,
     name: 'server175',
     ip: '143.248.49.175',
     cpu: 'i7-6700K',
@@ -391,11 +391,11 @@ const servers = [
     ram: 64,
     ssd: 256,
     os: 18.04,
-    user: faker.name.firstName(),
-    status : 'running'
+    // user: faker.name.firstName(),
+    // status : 'running'
   },
   {
-    id: 14324849218,
+    // id: 14324849218,
     name: 'server218',
     ip: '143.248.49.218',
     cpu: 'i7-7700K',
@@ -408,11 +408,11 @@ const servers = [
     ram: 32,
     ssd: 512,
     os: 18.04,
-    user: faker.name.firstName(),
-    status : 'running'
+    // user: faker.name.firstName(),
+    // status : 'running'
   },
   {
-    id: 14324849227,
+    // id: 14324849227,
     name: 'server227',
     ip: '143.248.49.227',
     cpu: 'E5-2640 v4',
@@ -425,8 +425,8 @@ const servers = [
     ram: 126,
     ssd: 960,
     os: 18.04,
-    user: faker.name.firstName(),
-    status : 'running'
+    // user: faker.name.firstName(),
+    // status : 'running'
   },
 ]
 

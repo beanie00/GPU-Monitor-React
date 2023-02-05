@@ -2,70 +2,57 @@ import PropTypes from 'prop-types';
 // @mui
 import {
   Box,
-  Radio,
   Stack,
   Button,
   Drawer,
-  Rating,
   Tooltip,
   Divider,
   Checkbox,
   FormGroup,
   IconButton,
   Typography,
-  RadioGroup,
   FormControlLabel,
 } from '@mui/material';
 // components
 import Iconify from '../../../components/Iconify';
 import Scrollbar from '../../../components/Scrollbar';
+import { TOTAL_TABLE_HEAD } from '../../../pages/Dashboard';
 
 // ----------------------------------------------------------------------
 
-export const SORT_BY_OPTIONS = [
-  { value: 'featured', label: 'Featured' },
-  { value: 'newest', label: 'Newest' },
-  { value: 'priceDesc', label: 'Price: High-Low' },
-  { value: 'priceAsc', label: 'Price: Low-High' },
-];
-export const FILTER_GENDER_OPTIONS = ['Men', 'Women', 'Kids'];
-export const FILTER_CATEGORY_OPTIONS = ['All', 'Shose', 'Apparel', 'Accessories'];
-export const FILTER_RATING_OPTIONS = ['up4Star', 'up3Star', 'up2Star', 'up1Star'];
-export const FILTER_PRICE_OPTIONS = [
-  { value: 'below', label: 'Below $25' },
-  { value: 'between', label: 'Between $25 - $75' },
-  { value: 'above', label: 'Above $75' },
-];
-export const FILTER_COLOR_OPTIONS = [
-  '#00AB55',
-  '#000000',
-  '#FFFFFF',
-  '#FFC0CB',
-  '#FF4842',
-  '#1890FF',
-  '#94D82D',
-  '#FFC107',
-];
-
-// ----------------------------------------------------------------------
-
-FilterSidebar.propTypes = {
+PropertySidebar.propTypes = {
   openFilter: PropTypes.bool,
   onOpenFilter: PropTypes.func,
   onCloseFilter: PropTypes.func,
+  selectedProperties: PropTypes.array,
+  setSelectedProperties: PropTypes.func,
 };
 
-export default function FilterSidebar({ openFilter, onOpenFilter, onCloseFilter }) {
+export default function PropertySidebar({ openFilter, onOpenFilter, onCloseFilter, selectedProperties, setSelectedProperties }) {
+  const handleCheck = (event) => {
+    if (event.target.checked) {
+      const previousProperties = JSON.parse(localStorage.getItem('properties'));
+      previousProperties.push(event.target.name);
+      setSelectedProperties(previousProperties);
+      localStorage.setItem('properties', JSON.stringify(previousProperties));
+    } else {
+      const previousProperties = JSON.parse(localStorage.getItem('properties'));
+      const index = previousProperties.indexOf(event.target.name);
+      if (index > -1) {
+        previousProperties.splice(index, 1);
+      }
+      setSelectedProperties(previousProperties);
+      localStorage.setItem('properties', JSON.stringify(previousProperties));
+    }
+  };
+
   return (
     <>
-      {/* <Button disableRipple color="inherit" endIcon={<Iconify icon="ic:round-filter-list" />} > */}
-        {/* Filters&nbsp; */}
-      {/* </Button> */}
-    <Tooltip title="Filter row">
+      <Tooltip title="View options">
         <IconButton onClick={onOpenFilter}>
-            <Iconify icon="ic:round-filter-list" />
+            <Iconify icon="mdi:eye-check" />
         </IconButton>
-    </Tooltip>
+      </Tooltip>
 
       <Drawer
         anchor="right"
@@ -77,7 +64,7 @@ export default function FilterSidebar({ openFilter, onOpenFilter, onCloseFilter 
       >
         <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ px: 1, py: 2 }}>
           <Typography variant="subtitle1" sx={{ ml: 1 }}>
-            Filters
+            Shown in table
           </Typography>
           <IconButton onClick={onCloseFilter}>
             <Iconify icon="eva:close-fill" />
@@ -90,8 +77,8 @@ export default function FilterSidebar({ openFilter, onOpenFilter, onCloseFilter 
           <Stack spacing={3} sx={{ p: 3 }}>
             <div>
               <FormGroup>
-                {FILTER_GENDER_OPTIONS.map((item) => (
-                  <FormControlLabel key={item} control={<Checkbox />} label={item} />
+                {TOTAL_TABLE_HEAD.filter((item) => item.id !== 'name' && item.id !== '').map((item) => (
+                  <FormControlLabel key={item.id} control={<Checkbox onChange={handleCheck} checked={selectedProperties.includes(item.id)} name={item.id} disabled={item.id === 'user'}/>} label={item.label} />
                 ))}
               </FormGroup>
             </div>
@@ -107,7 +94,7 @@ export default function FilterSidebar({ openFilter, onOpenFilter, onCloseFilter 
             variant="outlined"
             startIcon={<Iconify icon="ic:round-clear-all" />}
           >
-            Clear All
+            Back to default
           </Button>
         </Box>
       </Drawer>

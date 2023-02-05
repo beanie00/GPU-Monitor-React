@@ -31,7 +31,7 @@ export default function DashboardApp() {
       <Container maxWidth="xl">
         <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
           <Typography variant="h4" sx={{mr: 2}}>
-            SISReL GPU Monitor
+            SISReL Server Monitor
           </Typography>
           <Typography variant="caption">
             {time && (`Last updated: ${format(new Date(time.time.seconds * 1000 + time.time.nanoseconds/1000000), 'dd/MM/yyyy HH:mm:ss')}`)}

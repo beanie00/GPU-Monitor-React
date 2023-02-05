@@ -1,10 +1,11 @@
 import { filter } from 'lodash';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 // material
 import {
   Card,
   Table,
   Stack,
+  Box,
   TableRow,
   TableBody,
   TableCell,
@@ -14,33 +15,35 @@ import {
   TablePagination,
 } from '@mui/material';
 import { TimelineDot } from '@mui/lab';
+import { format } from 'date-fns'
 // components
 import Page from '../components/Page';
 import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
 import { ServerListHead, ServerListToolbar } from '../sections/@dashboard/server';
-// mock
-import SERVERLIST from '../_mock/server';
+import { firestore } from '../utils/firebase';
+// // mock
+// import SERVERLIST from '../_mock/server';
 
 // ----------------------------------------------------------------------
 
-const TABLE_HEAD = [
+export const TOTAL_TABLE_HEAD = [
   { id: 'name', label: 'Name', alignRight: false },
-  // { id: 'ip', label: 'IP', alignRight: false },
+  { id: 'ip', label: 'IP', alignRight: false },
   { id: 'usage', label: 'Usage', alignRight: false },
-  // { id: 'cpu', label: 'CPU', alignRight: false },
-  // { id: 'cpuClock', label: 'CPU Clock (GHz)', alignRight: false },
-  // { id: 'cpuSockets', label: 'CPU Sockets', alignRight: false },
+  { id: 'cpu', label: 'CPU', alignRight: false },
+  { id: 'cpuClock', label: 'CPU Clock (GHz)', alignRight: false },
+  { id: 'cpuSockets', label: 'CPU Sockets', alignRight: false },
   { id: 'cores', label: 'Cores', alignRight: false },
   { id: 'threads', label: 'Threads', alignRight: false },
   { id: 'gpu', label: 'GPU', alignRight: false },
   { id: 'numberOfGPU', label: '# of GPUs', alignRight: false },
   { id: 'ram', label: 'RAM (GB)', alignRight: false },
-  // { id: 'ssd', label: 'SSD/HDD (GB)', alignRight: false },
-  // { id: 'os', label: 'OS', alignRight: false },
+  { id: 'ssd', label: 'SSD/HDD (GB)', alignRight: false },
+  { id: 'os', label: 'OS', alignRight: false },
   { id: 'user', label: 'User', alignRight: false },
   { id: '' },
-];
+]
 
 // ----------------------------------------------------------------------
 
@@ -73,18 +76,51 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function User() {
+export default function Dashboard() {
+  const [serverData, setServerData] = useState([]);
+  const [time, setTime] = useState()
+
+  useEffect(() => {
+    firestore.collection('server').get().then((querySnapshot) => {
+      const data = querySnapshot.docs.map((doc) => doc.data());
+      setTime(data[0])
+      setServerData(data.filter((doc) => doc.server));
+    })
+  }, []);
+
+  // useEffect(() => {
+  //   firestore.collection('server').doc("wisrl@143.248.49.227").update({
+  //     // id: 14324849227,
+  //     name: 'server227',
+  //     ip: '143.248.49.227',
+  //     cpu: 'E5-2640 v4',
+  //     cpuClock: 2.4,
+  //     cpuSockets: 2,
+  //     cores: 20,
+  //     threads: 40,
+  //     gpu: 'TITAN Xp',
+  //     numberOfGPU: 8,
+  //     ram: 126,
+  //     ssd: 960,
+  //     os: 18.04,
+  //     // user: faker.name.firstName(),
+  //     // status : 'running'
+  //   },)
+  // }, []);
+  ///
   const [page, setPage] = useState(0);
-
   const [order, setOrder] = useState('asc');
-
   const [selected, setSelected] = useState([]);
-
   const [orderBy, setOrderBy] = useState('name');
-
   const [filterName, setFilterName] = useState('');
+  const [rowsPerPage, setRowsPerPage] = useState(50);
+  const [selectedProperties, setSelectedProperties] = useState(JSON.parse(localStorage.getItem('properties')));
 
-  const [rowsPerPage, setRowsPerPage] = useState(25);
+  if (selectedProperties == null){
+    const properties = ['name', 'usage', 'cores', 'threads', 'gpu', 'numberOfGPU', 'ram']
+    setSelectedProperties(properties);
+    localStorage.setItem('properties', properties);
+  }
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -94,7 +130,7 @@ export default function User() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = SERVERLIST.map((n) => n.name);
+      const newSelecteds = serverData.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -114,23 +150,34 @@ export default function User() {
     setFilterName(event.target.value);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - SERVERLIST.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - serverData.length) : 0;
 
-  const filteredUsers = applySortFilter(SERVERLIST, getComparator(order, orderBy), filterName);
+  const filteredServers = applySortFilter(serverData, getComparator(order, orderBy), filterName);
 
-  const isUserNotFound = filteredUsers.length === 0;
+  const isUserNotFound = filteredServers.length === 0;
+
+  const TABLE_HEAD = TOTAL_TABLE_HEAD.filter((item) => selectedProperties.includes(item.id));
 
   return (
     <Page title="SISReL Server Monitor">
       <Container maxWidth={'xl'}>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+        {/* <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
             SISReL Server Monitor
+          </Typography>
+        </Stack> */}
+        <Stack direction="row" alignItems="center" mb={5}>
+          <Typography variant="h4" gutterBottom sx={{mr: 2}}>
+            SISReL Server Monitor
+          </Typography>
+          <Typography variant="caption" mb={1}>
+            {time && (`Last updated: ${format(new Date(time.time.seconds * 1000 + time.time.nanoseconds/1000000), 'dd/MM/yyyy HH:mm:ss')}`)}
           </Typography>
         </Stack>
 
         <Card>
-          <ServerListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
+          <ServerListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName}
+                              selectedProperties={selectedProperties} setSelectedProperties={setSelectedProperties}/>
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
@@ -138,15 +185,14 @@ export default function User() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={SERVERLIST.length}
+                  rowCount={serverData.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    // const { id, name, ip, cpu, cpuClock, cpuSockets, cores, threads, gpu, numberOfGPU, ram, ssd, os, user, status } = row;
-                    const { id, name, usage, cores, threads, gpu, numberOfGPU, ram, user, status } = row;
+                  {filteredServers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                    const { id, name, server, info, cpu, cpuClock, cpuSockets, cores, threads, gpu, numberOfGPU, ram, ssd, os, user, status } = row;
                     const isItemSelected = selected.indexOf(name) !== -1;
 
                     return (
@@ -163,24 +209,61 @@ export default function User() {
                             style={{width: '10px', height: '10px', marginLeft: '20px'}}
                             color={
                               (status === 'running' && 'success') ||
-                              (status === 'fail' && 'error') 
+                              (status !== 'running' && 'error')
                             }
                           />
                         </TableCell>
                         <TableCell align="left"><Typography variant="subtitle2" noWrap>{name}</Typography></TableCell>
-                        {/* <TableCell align="left">{ip}</TableCell> */}
-                        <TableCell align="left">{usage}</TableCell>
-                        {/* <TableCell align="left">{cpu}</TableCell> */}
-                        {/* <TableCell align="left">{cpuClock}</TableCell> */}
-                        {/* <TableCell align="left">{cpuSockets}</TableCell> */}
-                        <TableCell align="left">{cores}</TableCell>
-                        <TableCell align="left">{threads}</TableCell>
-                        <TableCell align="left">{gpu}</TableCell>
-                        <TableCell align="left">{numberOfGPU}</TableCell>
-                        <TableCell align="left">{ram}</TableCell>
-                        {/* <TableCell align="left">{ssd}</TableCell> */}
-                        {/* <TableCell align="left">{os}</TableCell> */}
-                        <TableCell align="left">{user}</TableCell>
+                        {selectedProperties.includes('ip') && server && (
+                          <TableCell align="left">{server.split("@")[1]}</TableCell>
+                        )}
+                        {selectedProperties.includes('usage') && (
+                          <TableCell align="left">
+                            {info && info.map((gpu, index) => (
+                              <Box key={index} sx={{pt: 1, maxWidth: 600}}>
+                                {gpu.process_names.length > 0 && <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                                  <b>GPU {index} ({gpu.model})</b> : used by <b>{gpu.process_names.join(', ')}</b> with memory usage <b>{gpu.used_memory.join(', ')}</b>
+                                </Typography>}
+                                {gpu.process_names.length === 0 && <Typography variant="caption" sx={{ color: 'success.dark' }}>
+                                  <b>GPU {index} ({gpu.model})</b> : <b>Free</b>
+                                </Typography>}
+                              </Box>
+                              ))}
+                          </TableCell>
+                        )}
+                        {selectedProperties.includes('cpu') && (
+                          <TableCell align="left">{cpu}</TableCell>
+                        )}
+                        {selectedProperties.includes('cpuClock') && (
+                          <TableCell align="left">{cpuClock}</TableCell>
+                          )}
+                        {selectedProperties.includes('cpuSockets') && (
+                          <TableCell align="left">{cpuSockets}</TableCell>
+                          )}
+                        {selectedProperties.includes('cores') && (
+                          <TableCell align="left">{cores}</TableCell>
+                          )}
+                        {selectedProperties.includes('threads') && (
+                          <TableCell align="left">{threads}</TableCell>
+                        )}
+                        {selectedProperties.includes('gpu') && (
+                          <TableCell align="left">{gpu}</TableCell>
+                          )}
+                        {selectedProperties.includes('numberOfGPU') && (
+                          <TableCell align="left">{numberOfGPU}</TableCell>
+                        )}
+                        {selectedProperties.includes('ram') && (
+                          <TableCell align="left">{ram}</TableCell>
+                        )}
+                        {selectedProperties.includes('ssd') && (
+                          <TableCell align="left">{ssd}</TableCell>
+                        )}
+                        {selectedProperties.includes('os') && (
+                          <TableCell align="left">{os}</TableCell>
+                        )}
+                        {selectedProperties.includes('user') && (
+                          <TableCell align="left">{user}</TableCell>
+                        )}
                       </TableRow>
                     );
                   })}
@@ -205,9 +288,9 @@ export default function User() {
           </Scrollbar>
 
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={[5, 10, 25, 50]}
             component="div"
-            count={SERVERLIST.length}
+            count={serverData.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
