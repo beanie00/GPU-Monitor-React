@@ -21,6 +21,7 @@ import Page from '../components/Page';
 import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
 import { ServerListHead, ServerListToolbar } from '../sections/@dashboard/server';
+import { CpuUsage } from '../sections/@dashboard/app';
 import { firestore } from '../utils/firebase';
 // // mock
 // import SERVERLIST from '../_mock/server';
@@ -30,7 +31,8 @@ import { firestore } from '../utils/firebase';
 export const TOTAL_TABLE_HEAD = [
   { id: 'name', label: 'Name', alignRight: false },
   { id: 'ip', label: 'IP', alignRight: false },
-  { id: 'usage', label: 'Usage', alignRight: false },
+  { id: 'gpuUsage', label: 'GPU Usage', alignRight: false },
+  { id: 'cpuUsage', label: 'CPU Usage', alignRight: false },
   { id: 'cpu', label: 'CPU', alignRight: false },
   { id: 'cpuClock', label: 'CPU Clock (GHz)', alignRight: false },
   { id: 'cpuSockets', label: 'CPU Sockets', alignRight: false },
@@ -54,10 +56,22 @@ function descendingComparator(a, b, orderBy) {
   if (b[orderBy] > a[orderBy]) {
     return 1;
   }
+  if (!a[orderBy] && b[orderBy]) {
+    return 2;
+  }
+  if (!b[orderBy] && a[orderBy]) {
+    return -2;
+  }
   return 0;
 }
 
 function getComparator(order, orderBy) {
+  if (orderBy === 'gpuUsage') {
+    orderBy = 'info'
+  }
+  if (orderBy === 'cpuUsage') {
+    orderBy = 'cpuInfo'
+  }
   return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
@@ -71,7 +85,7 @@ function applySortFilter(array, comparator, query) {
     return a[1] - b[1];
   });
   if (query) {
-    return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return filter(array, (_user) => _user.name?.toLowerCase().indexOf(query.toLowerCase()) !== -1 || _user.server?.indexOf(query) !== -1);
   }
   return stabilizedThis.map((el) => el[0]);
 }
@@ -89,19 +103,19 @@ export default function Dashboard() {
   }, []);
 
   // useEffect(() => {
-  //   firestore.collection('server').doc("wisrl@143.248.49.227").update({
-  //     // id: 14324849227,
-  //     name: 'server227',
-  //     ip: '143.248.49.227',
-  //     cpu: 'E5-2640 v4',
-  //     cpuClock: 2.4,
+  //   firestore.collection('server').doc("wisrl@143.248.48.63").update({
+  //     // id: 1432484863,
+  //     name: 'server63',
+  //     ip: '143.248.48.63',
+  //     cpu: 'E5-2667 v4',
+  //     cpuClock: 3.2,
   //     cpuSockets: 2,
-  //     cores: 20,
-  //     threads: 40,
-  //     gpu: 'TITAN Xp',
+  //     cores: 16,
+  //     threads: 32,
+  //     gpu: 'TITAN X',
   //     numberOfGPU: 8,
   //     ram: 126,
-  //     ssd: 960,
+  //     ssd: 893,
   //     os: 18.04,
   //     // user: faker.name.firstName(),
   //     // status : 'running'
@@ -109,18 +123,25 @@ export default function Dashboard() {
   // }, []);
   ///
   const [page, setPage] = useState(0);
-  const [order, setOrder] = useState('asc');
+  const [order, setOrder] = useState('desc');
   const [selected, setSelected] = useState([]);
-  const [orderBy, setOrderBy] = useState('name');
+  const [orderBy, setOrderBy] = useState('gpuUsage');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(50);
-  const [selectedProperties, setSelectedProperties] = useState(JSON.parse(localStorage.getItem('properties')));
+  const [selectedProperties, setSelectedProperties] = useState([]);
 
-  if (selectedProperties == null){
-    const properties = ['name', 'usage', 'cores', 'threads', 'gpu', 'numberOfGPU', 'ram']
-    setSelectedProperties(properties);
-    localStorage.setItem('properties', properties);
-  }
+
+  useEffect(() => {
+    const prevProperties = localStorage.getItem('properties')
+    if (prevProperties == null){
+      const properties = ['name', 'cpuUsage', 'gpuUsage', 'cores', 'threads', 'gpu', 'numberOfGPU', 'ram']
+      setSelectedProperties(properties);
+      localStorage.setItem('properties', JSON.stringify(properties));
+    } else {
+      setSelectedProperties(JSON.parse(prevProperties));
+    }
+  }, [])
+
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -192,7 +213,7 @@ export default function Dashboard() {
                 />
                 <TableBody>
                   {filteredServers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, name, server, info, cpu, cpuClock, cpuSockets, cores, threads, gpu, numberOfGPU, ram, ssd, os, user, status } = row;
+                    const { id, name, server, cpuInfo, info, cpu, cpuClock, cpuSockets, cores, threads, gpu, numberOfGPU, ram, ssd, os, user, status } = row;
                     const isItemSelected = selected.indexOf(name) !== -1;
 
                     return (
@@ -217,19 +238,29 @@ export default function Dashboard() {
                         {selectedProperties.includes('ip') && server && (
                           <TableCell align="left">{server.split("@")[1]}</TableCell>
                         )}
-                        {selectedProperties.includes('usage') && (
+                        {selectedProperties.includes('gpuUsage') && (
                           <TableCell align="left">
                             {info && info.map((gpu, index) => (
                               <Box key={index} sx={{pt: 1, maxWidth: 600}}>
                                 {gpu.process_names.length > 0 && <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-                                  <b>GPU {index} ({gpu.model})</b> : used by <b>{gpu.process_names.join(', ')}</b> with memory usage <b>{gpu.used_memory.join(', ')}</b>
+                                  <b>GPU {index}</b> : used by <b>
+                                    {gpu.process_names.map((name, index) => {
+                                      if (index === gpu.process_names.length - 1) {
+                                        return `${name} (${gpu.used_memory[index]})`;
+                                      }
+                                      return `${name} (${gpu.used_memory[index]}), `;
+                                    })}
+                                  </b>
                                 </Typography>}
                                 {gpu.process_names.length === 0 && <Typography variant="caption" sx={{ color: 'success.dark' }}>
-                                  <b>GPU {index} ({gpu.model})</b> : <b>Free</b>
+                                  <b>GPU {index}</b> : <b>Free</b>
                                 </Typography>}
                               </Box>
                               ))}
                           </TableCell>
+                        )}
+                        {selectedProperties.includes('cpuUsage') &&  (
+                          <CpuUsage cpuInfo={cpuInfo}/>
                         )}
                         {selectedProperties.includes('cpu') && (
                           <TableCell align="left">{cpu}</TableCell>

@@ -1,1 +1,1 @@
-export { default as ResourceListItem } from './ResourceListItem';
+export { default as CpuUsage } from './CpuUsage';
