@@ -102,25 +102,6 @@ export default function Dashboard() {
     })
   }, []);
 
-  // useEffect(() => {
-  //   firestore.collection('server').doc("wisrl@143.248.48.63").update({
-  //     // id: 1432484863,
-  //     name: 'server63',
-  //     ip: '143.248.48.63',
-  //     cpu: 'E5-2667 v4',
-  //     cpuClock: 3.2,
-  //     cpuSockets: 2,
-  //     cores: 16,
-  //     threads: 32,
-  //     gpu: 'TITAN X',
-  //     numberOfGPU: 8,
-  //     ram: 126,
-  //     ssd: 893,
-  //     os: 18.04,
-  //     // user: faker.name.firstName(),
-  //     // status : 'running'
-  //   },)
-  // }, []);
   ///
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('desc');
