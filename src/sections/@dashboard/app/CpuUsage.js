@@ -5,7 +5,7 @@ CpuUsage.propTypes = {
     cpuInfo: PropTypes.string,
 };
 
-export default function CpuUsage({ cpuInfo }) {
+export function CpuUsage({ cpuInfo }) {
     if (cpuInfo) {
         const cpu = `${cpuInfo.split("Mem")[0].split("us")[0]} us`
         const mem = `Mem ${cpuInfo.split("Mem")[1].split("Swap")[0]}`

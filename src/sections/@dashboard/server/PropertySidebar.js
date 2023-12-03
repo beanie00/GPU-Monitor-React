@@ -88,7 +88,7 @@ export default function PropertySidebar({ openFilter, onOpenFilter, onCloseFilte
         <Box sx={{ p: 3 }}>
           <Button
             onClick={() => {
-              const defaultProperties = ['name', 'cpuUsage', 'gpuUsage', 'cores', 'threads', 'gpu', 'numberOfGPU', 'ram']
+              const defaultProperties = ['name', 'cpuUsage', 'gpuUsage', 'disk']
               setSelectedProperties(defaultProperties);
               localStorage.setItem('properties', JSON.stringify(defaultProperties));
             }}

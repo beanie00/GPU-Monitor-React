@@ -21,7 +21,8 @@ import Page from '../components/Page';
 import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
 import { ServerListHead, ServerListToolbar } from '../sections/@dashboard/server';
-import { CpuUsage } from '../sections/@dashboard/app';
+import { CpuUsage } from '../sections/@dashboard/app/CpuUsage';
+import { DiskUsage } from '../sections/@dashboard/app/DiskUsage';
 import { firestore } from '../utils/firebase';
 // // mock
 // import SERVERLIST from '../_mock/server';
@@ -32,16 +33,15 @@ export const TOTAL_TABLE_HEAD = [
   { id: 'name', label: 'Name', alignRight: false },
   { id: 'ip', label: 'IP', alignRight: false },
   { id: 'gpuUsage', label: 'GPU Usage', alignRight: false },
-  { id: 'cpuUsage', label: 'CPU Usage', alignRight: false },
+  { id: 'cpuUsage', label: 'CPU/RAM Usage', alignRight: false },
+  { id: 'disk', label: 'Disk Usage (GB)', alignRight: false },
+  { id: 'gpu', label: 'GPU', alignRight: false },
   { id: 'cpu', label: 'CPU', alignRight: false },
   { id: 'cpuClock', label: 'CPU Clock (GHz)', alignRight: false },
   { id: 'cpuSockets', label: 'CPU Sockets', alignRight: false },
   { id: 'cores', label: 'Cores', alignRight: false },
   { id: 'threads', label: 'Threads', alignRight: false },
-  { id: 'gpu', label: 'GPU', alignRight: false },
   { id: 'numberOfGPU', label: '# of GPUs', alignRight: false },
-  { id: 'ram', label: 'RAM (GB)', alignRight: false },
-  { id: 'ssd', label: 'SSD/HDD (GB)', alignRight: false },
   { id: 'os', label: 'OS', alignRight: false },
   { id: 'user', label: 'User', alignRight: false },
   { id: '' },
@@ -115,7 +115,7 @@ export default function Dashboard() {
   useEffect(() => {
     const prevProperties = localStorage.getItem('properties')
     if (prevProperties == null){
-      const properties = ['name', 'cpuUsage', 'gpuUsage', 'cores', 'threads', 'gpu', 'numberOfGPU', 'ram']
+      const properties = ['name', 'cpuUsage', 'gpuUsage', 'disk', 'gpu']
       setSelectedProperties(properties);
       localStorage.setItem('properties', JSON.stringify(properties));
     } else {
@@ -163,11 +163,6 @@ export default function Dashboard() {
   return (
     <Page title="SISReL Server Monitor">
       <Container maxWidth={'xl'}>
-        {/* <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-          <Typography variant="h4" gutterBottom>
-            SISReL Server Monitor
-          </Typography>
-        </Stack> */}
         <Stack direction="row" alignItems="center" mb={5}>
           <Typography variant="h4" gutterBottom sx={{mr: 2}}>
             SISReL Server Monitor
@@ -194,9 +189,14 @@ export default function Dashboard() {
                 />
                 <TableBody>
                   {filteredServers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, name, server, cpuInfo, info, cpu, cpuClock, cpuSockets, cores, threads, gpu, numberOfGPU, ram, ssd, os, user, status } = row;
+                    const { id, name, server, cpuInfo, info, cpu, cpuClock, cpuSockets, cores, threads, gpu, numberOfGPU, disk, os, user, status } = row;
                     const isItemSelected = selected.indexOf(name) !== -1;
-
+                    let dotColor = 'success'
+                    if (status === 'fail') {
+                      dotColor = 'error'
+                    } else if (status === 'no-nvidia') {
+                      dotColor = 'info'
+                    }
                     return (
                       <TableRow
                         hover
@@ -209,10 +209,7 @@ export default function Dashboard() {
                         <TableCell padding="checkbox">
                           <TimelineDot
                             style={{width: '10px', height: '10px', marginLeft: '20px'}}
-                            color={
-                              (status === 'running' && 'success') ||
-                              (status !== 'running' && 'error')
-                            }
+                            color={dotColor}
                           />
                         </TableCell>
                         <TableCell align="left"><Typography variant="subtitle2" noWrap>{name}</Typography></TableCell>
@@ -243,6 +240,12 @@ export default function Dashboard() {
                         {selectedProperties.includes('cpuUsage') &&  (
                           <CpuUsage cpuInfo={cpuInfo}/>
                         )}
+                        {selectedProperties.includes('disk') && (
+                          <DiskUsage diskInfo={disk}/>
+                        )}
+                        {selectedProperties.includes('gpu') && (
+                          <TableCell align="left">{gpu}</TableCell>
+                        )}
                         {selectedProperties.includes('cpu') && (
                           <TableCell align="left">{cpu}</TableCell>
                         )}
@@ -258,17 +261,8 @@ export default function Dashboard() {
                         {selectedProperties.includes('threads') && (
                           <TableCell align="left">{threads}</TableCell>
                         )}
-                        {selectedProperties.includes('gpu') && (
-                          <TableCell align="left">{gpu}</TableCell>
-                          )}
                         {selectedProperties.includes('numberOfGPU') && (
                           <TableCell align="left">{numberOfGPU}</TableCell>
-                        )}
-                        {selectedProperties.includes('ram') && (
-                          <TableCell align="left">{ram}</TableCell>
-                        )}
-                        {selectedProperties.includes('ssd') && (
-                          <TableCell align="left">{ssd}</TableCell>
                         )}
                         {selectedProperties.includes('os') && (
                           <TableCell align="left">{os}</TableCell>
