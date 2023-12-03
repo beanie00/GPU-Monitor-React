@@ -45,8 +45,8 @@ export function CpuUsage({ cpuInfo }) {
         return (
             <TableCell align="left">
                 <Box>{cpu}</Box>
-                <Box>Mem : {memTotal}G total, {memFree}G free, {memUsed}G used, {memBuff}G buff/cache</Box>
-                <Box>Swap : {swapTotal}G total, {swapFree}G free, {swapUsed}G used, {swapAvail}G avail</Box>
+                <Box sx={{minWidth: 220}}>Mem : {memTotal}G total, {memFree}G free, {memUsed}G used, {memBuff}G buff/cache</Box>
+                <Box sx={{minWidth: 220}}>Swap : {swapTotal}G total, {swapFree}G free, {swapUsed}G used, {swapAvail}G avail</Box>
             </TableCell>
         )
     }

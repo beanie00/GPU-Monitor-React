@@ -17,8 +17,8 @@ export function DiskUsage({ diskInfo }) {
             diskFree = parseInt(diskFree[0], 10)
             return (
                 <TableCell align="left">
-                    <Box sx={{minWidth: 150}}>Total: {diskTotal}G,</Box>
-                    <Box sx={{minWidth: 150}}>Free: {diskFree}G</Box>
+                    <Box sx={{minWidth: 120}}>Total: {diskTotal}G,</Box>
+                    <Box sx={{minWidth: 120}}>Free: {diskFree}G</Box>
                 </TableCell>
             )
         }
