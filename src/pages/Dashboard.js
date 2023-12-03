@@ -113,11 +113,11 @@ export default function Dashboard() {
 
 
   useEffect(() => {
-    const prevProperties = localStorage.getItem('properties')
+    const prevProperties = localStorage.getItem('properties1')
     if (prevProperties == null){
       const properties = ['name', 'cpuUsage', 'gpuUsage', 'disk', 'gpu']
       setSelectedProperties(properties);
-      localStorage.setItem('properties', JSON.stringify(properties));
+      localStorage.setItem('properties1', JSON.stringify(properties));
     } else {
       setSelectedProperties(JSON.parse(prevProperties));
     }
@@ -219,7 +219,7 @@ export default function Dashboard() {
                         {selectedProperties.includes('gpuUsage') && (
                           <TableCell align="left">
                             {info && info.map((gpu, index) => (
-                              <Box key={index} sx={{pt: 1, maxWidth: 600}}>
+                              <Box key={index} sx={{pt: 1, maxWidth: 550}}>
                                 {gpu.process_names.length > 0 && <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                                   <b>GPU {index}</b> : used by <b>
                                     {gpu.process_names.map((name, index) => {

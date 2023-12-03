@@ -31,18 +31,18 @@ PropertySidebar.propTypes = {
 export default function PropertySidebar({ openFilter, onOpenFilter, onCloseFilter, selectedProperties, setSelectedProperties }) {
   const handleCheck = (event) => {
     if (event.target.checked) {
-      const previousProperties = JSON.parse(localStorage.getItem('properties'));
+      const previousProperties = JSON.parse(localStorage.getItem('properties1'));
       previousProperties.push(event.target.name);
       setSelectedProperties(previousProperties);
       localStorage.setItem('properties', JSON.stringify(previousProperties));
     } else {
-      const previousProperties = JSON.parse(localStorage.getItem('properties'));
+      const previousProperties = JSON.parse(localStorage.getItem('properties1'));
       const index = previousProperties.indexOf(event.target.name);
       if (index > -1) {
         previousProperties.splice(index, 1);
       }
       setSelectedProperties(previousProperties);
-      localStorage.setItem('properties', JSON.stringify(previousProperties));
+      localStorage.setItem('properties1', JSON.stringify(previousProperties));
     }
   };
 
@@ -90,7 +90,7 @@ export default function PropertySidebar({ openFilter, onOpenFilter, onCloseFilte
             onClick={() => {
               const defaultProperties = ['name', 'cpuUsage', 'gpuUsage', 'disk']
               setSelectedProperties(defaultProperties);
-              localStorage.setItem('properties', JSON.stringify(defaultProperties));
+              localStorage.setItem('properties1', JSON.stringify(defaultProperties));
             }}
             fullWidth
             size="large"
