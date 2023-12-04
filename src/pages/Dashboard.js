@@ -115,7 +115,7 @@ export default function Dashboard() {
   useEffect(() => {
     const prevProperties = localStorage.getItem('properties1')
     if (prevProperties == null){
-      const properties = ['name', 'cpuUsage', 'gpuUsage', 'disk', 'gpu']
+      const properties = ['name', 'ip', 'cpuUsage', 'gpuUsage', 'disk', 'gpu']
       setSelectedProperties(properties);
       localStorage.setItem('properties1', JSON.stringify(properties));
     } else {
