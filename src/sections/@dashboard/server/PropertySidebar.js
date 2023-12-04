@@ -34,7 +34,7 @@ export default function PropertySidebar({ openFilter, onOpenFilter, onCloseFilte
       const previousProperties = JSON.parse(localStorage.getItem('properties1'));
       previousProperties.push(event.target.name);
       setSelectedProperties(previousProperties);
-      localStorage.setItem('properties', JSON.stringify(previousProperties));
+      localStorage.setItem('properties1', JSON.stringify(previousProperties));
     } else {
       const previousProperties = JSON.parse(localStorage.getItem('properties1'));
       const index = previousProperties.indexOf(event.target.name);
